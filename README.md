@@ -8,6 +8,6 @@
     * $ cd ..
     * $ docker-compose up -d
 ### IMPORTANT ###
-Execute <your web container> with www-data user for run magento correctly
+Execute < your web container > with www-data user for run magento correctly
 ### IMPORTANT ###
 * Now you can access to magento instance (default http://localhost:9200)
