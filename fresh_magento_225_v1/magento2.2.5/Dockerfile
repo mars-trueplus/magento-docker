@@ -5,6 +5,7 @@ LABEL description="Apache: 2.4 ----  PHP: 7.0.32"
 
 ENV INSTALL_DIR /var/www/html
 ENV COMPOSER_HOME /var/www/.composer/
+ENV PERMISSION_DIR /var/www
 
 RUN curl -sS https://getcomposer.org/installer | php \
     && mv composer.phar /usr/local/bin/composer
@@ -31,7 +32,11 @@ RUN requirements="libpng12-dev libmcrypt-dev libmcrypt4 libcurl3-dev libfreetype
 RUN usermod -u 1000 www-data \
     && groupmod -g 1000 www-data
 RUN chsh -s /bin/bash www-data
-RUN mkdir -p /var/www/html
+RUN mkdir -p $INSTALL_DIR
+RUN chown -R 1000:1000 $PERMISSION_DIR
+RUN chmod 775 $PERMISSION_DIR
+RUN chmod g+ws $PERMISSION_DIR
+
 
 RUN cd $INSTALL_DIR \
     && find . -type d -exec chmod g+w {} \; \
@@ -54,3 +59,6 @@ WORKDIR $INSTALL_DIR
 ADD crontab /etc/cron.d/magento2-cron
 RUN chmod 0644 /etc/cron.d/magento2-cron \
     && crontab -u www-data /etc/cron.d/magento2-cron
+
+
+#USER www-data
