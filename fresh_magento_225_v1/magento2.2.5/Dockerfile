@@ -28,15 +28,16 @@ RUN requirements="libpng12-dev libmcrypt-dev libmcrypt4 libcurl3-dev libfreetype
     && requirementsToRemove="libpng12-dev libmcrypt-dev libcurl3-dev libpng12-dev libfreetype6-dev libjpeg-turbo8-dev" \
     && apt-get purge --auto-remove -y $requirementsToRemove
 
+RUN usermod -u 1000 www-data
 RUN chsh -s /bin/bash www-data
 
-RUN chown -R www-data:www-data /var/www
-RUN su www-data -c "composer create-project --repository-url=https://repo.magento.com/ magento/project-community-edition $INSTALL_DIR $MAGENTO_VERSION"
+RUN mkdir -p /var/www/html
+
 
 RUN cd $INSTALL_DIR \
-    && find . -type d -exec chmod 770 {} \; \
-    && find . -type f -exec chmod 660 {} \; \
-    && chmod u+x bin/magento
+    && find . -type d -exec chmod g+w {} \; \
+    && find . -type f -exec chmod g+ws {} \;
+#    && chown -R www-data:www-data .
 
 COPY ./install-magento /usr/local/bin/install-magento
 RUN chmod +x /usr/local/bin/install-magento
