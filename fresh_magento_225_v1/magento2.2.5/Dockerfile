@@ -27,8 +27,9 @@ RUN requirements="libpng12-dev libmcrypt-dev libmcrypt4 libcurl3-dev libfreetype
     && requirementsToRemove="libpng12-dev libmcrypt-dev libcurl3-dev libpng12-dev libfreetype6-dev libjpeg-turbo8-dev" \
     && apt-get purge --auto-remove -y $requirementsToRemove
 
-# Set UID 1000 to www-data user
-RUN usermod -u 1000 www-data
+# Set UID 1000 to www-data user and GID to www-data group
+RUN usermod -u 1000 www-data \
+    && groupmod -g 1000 www-data
 RUN chsh -s /bin/bash www-data
 RUN mkdir -p /var/www/html
 
