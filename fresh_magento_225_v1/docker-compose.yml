@@ -1,7 +1,7 @@
 version: '3.0'
 services:
   web:
-    image: marstrueplus/magento2:v4
+    image: marstrueplus/magento2:latest
     ports:
       - "9200:80"
     links:
@@ -10,12 +10,10 @@ services:
       - env
     volumes:
       - ./src:/var/www/html
-#    command: find . -type d -exec chmod g+w {} \;
-#      && find . -type f -exec chmod g+ws {} \; &&  chown -R www-data:www-data . && \ chmod u+x bin/magento
   db:
     image: mysql:5.6.23
-#    volumes:
-#      - db-data:/var/lib/mysql/data
+    volumes:
+      - db-data:/var/lib/mysql/data
     env_file:
       - env
     ports:
@@ -27,5 +25,5 @@ services:
     links:
       - db
 volumes:
-#  db-data:
+  db-data:
   src:

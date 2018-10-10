@@ -1,9 +1,8 @@
 FROM marstrueplus/apache2.4-php7.0.32:v1
 LABEL maintainer="mars@trueplus.vn"
-LABEL version="2.2.5"
-LABEL description="Magento 2.2.5"
+LABEL version="Magento 2.2.x"
+LABEL description="Apache: 2.4 ----  PHP: 7.0.32"
 
-ENV MAGENTO_VERSION 2.2.5
 ENV INSTALL_DIR /var/www/html
 ENV COMPOSER_HOME /var/www/.composer/
 
@@ -28,16 +27,14 @@ RUN requirements="libpng12-dev libmcrypt-dev libmcrypt4 libcurl3-dev libfreetype
     && requirementsToRemove="libpng12-dev libmcrypt-dev libcurl3-dev libpng12-dev libfreetype6-dev libjpeg-turbo8-dev" \
     && apt-get purge --auto-remove -y $requirementsToRemove
 
+# Set UID 1000 to www-data user
 RUN usermod -u 1000 www-data
 RUN chsh -s /bin/bash www-data
-
 RUN mkdir -p /var/www/html
-
 
 RUN cd $INSTALL_DIR \
     && find . -type d -exec chmod g+w {} \; \
     && find . -type f -exec chmod g+ws {} \;
-#    && chown -R www-data:www-data .
 
 COPY ./install-magento /usr/local/bin/install-magento
 RUN chmod +x /usr/local/bin/install-magento
